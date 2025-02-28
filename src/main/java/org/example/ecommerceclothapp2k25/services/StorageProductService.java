@@ -3,6 +3,8 @@ import org.example.ecommerceclothapp2k25.models.Product;
 import org.example.ecommerceclothapp2k25.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
@@ -15,40 +17,49 @@ public class StorageProductService implements IProductService {
     @Autowired
      private ProductRepo productRepo;
 
-    @Override
-    public Product getProductById(Long prductid) {
-        Optional<Product> product = productRepo.findProductById(prductid);
-        if (product.isEmpty()) {
-            return null;
-        }
-        return product.get();
-    }
+   public String sendProduct(Product prod)
+   {
+       productRepo.save(prod);
+       return "Awesome Teju, Product updated in DB Successfully";
+   }
+
+   public Product getProductById(int id)
+   {
+       return productRepo.findById(id).orElse(new Product());
+   }
+
+   public List<Product> getProducts() {
+       return productRepo.findAll();
+   }
 
     @Override
-    public List<Product> getProductsAll() {
-        List<Product> products = productRepo.findAll();
-        if (products.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return products;
+    public void putProduct(int id,Product prod) {
+
+       Optional<Product> p=productRepo.findById(id);
+       if(p.isPresent())
+       {
+           Product actualpro=p.get();
+           actualpro.setName(prod.getName());
+           actualpro.setDescription(prod.getDescription());
+           actualpro.setPrice(prod.getPrice());
+           productRepo.save(actualpro);
+       }
+       else {
+           throw new RuntimeException("Product not found");
+       }
     }
 
-    @Override
-    public Product saveProduct(Product product) {
-        Product prdoduct = productRepo.save(product);
-        return product;
+    public void deleteProductById(int id) {
+       productRepo.deleteById(id);
     }
 
-    @Override
-    public Product saveUser(Product product) {
-        return null;
+    public void deleteAllProducts(List<Integer> ids) {
+       productRepo.deleteAllById(ids);
     }
 
-   /* @Override
-    public Product replaceProductById(Long id, Product product) {
-
-        return null;
-    } */
+    public List<Product> sendAllProducts(List<Product> prods) {
+       return productRepo.saveAll(prods);
+    }
 
 
 }
