@@ -2,6 +2,8 @@ package org.example.ecommerceclothapp2k25;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 
 @SpringBootApplication
 public class ECommerceClothapp2k25Application {

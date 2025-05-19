@@ -11,19 +11,27 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3006")
 @RestController
 @RequestMapping("website")
 public class ProductController {
 
-
+//http://host:8080/website/products"
     //merging to main branch
         @Autowired
         private IProductService iproductService;
+
 
         @GetMapping("/products")
         public ResponseEntity<List<Product>> getProducts() {
             return new ResponseEntity<>(iproductService.getProducts(),HttpStatus.OK);
         }
+
+//        @GetMapping("/products/{name}")
+//        public Product getProductByName(@PathVariable String name)
+//        {
+//
+//        }
 
         @GetMapping("/products/{id}")
         public Product getProductById(@PathVariable int id)
